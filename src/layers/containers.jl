@@ -305,7 +305,7 @@ end
     PairwiseFusion(connection; name=nothing, layers...)
     PairwiseFusion(; connection, layers..., name=nothing)
 
-```
+```text
 x1 → layer1 → y1 ↘
                   connection → layer2 → y2 ↘
               x2 ↗                          connection → y3
