@@ -259,10 +259,12 @@ ps = ComponentArray(ps)
 n_samples = 20
 x_dim = 10
 y_dim = 5
+nothing # hide
 
 # Generate random ground truth W and b.
 W = randn(rng, Float32, y_dim, x_dim)
 b = randn(rng, Float32, y_dim)
+nothing # hide
 
 # Generate samples with additional noise.
 x_samples = randn(rng, Float32, x_dim, n_samples)
@@ -293,6 +295,9 @@ function train_model!(model, ps, st, opt, nepochs::Int)
     end
     return tstate.model, tstate.parameters, tstate.states
 end
+nothing # hide
+
+#-
 
 model, ps, st = train_model!(model, ps, st, Descent(0.01f0), 10000)
 

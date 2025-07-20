@@ -23,6 +23,7 @@ using Lux,
 
 const xdev = reactant_device(; force=true)
 const cdev = cpu_device()
+nothing # hide
 
 # ## Problem Definition
 
@@ -50,6 +51,7 @@ function PINN(; hidden_dims::Int=32)
         ),
     )
 end
+nothing # hide
 
 # ## Define the Loss Functions
 
@@ -79,6 +81,7 @@ end
 function physics_informed_loss_function(model::StatefulLuxLayer, xyt::AbstractArray)
     return mean(abs2, ∂u_∂t(model, xyt) .- ∂²u_∂x²(model, xyt) .- ∂²u_∂y²(model, xyt))
 end
+nothing # hide
 
 # Additionally, we need to compute the loss wrt the boundary conditions.
 
@@ -96,6 +99,7 @@ function loss_function(model, ps, st, (xyt, target_data, xyt_bc, target_bc))
     loss = physics_loss + data_loss + bc_loss
     return loss, smodel.st, (; physics_loss, data_loss, bc_loss)
 end
+nothing # hide
 
 # ## Generate the Data
 
@@ -106,6 +110,8 @@ end
 
 analytical_solution(x, y, t) = @. exp(x + y) * cos(x + y + 4t)
 analytical_solution(xyt) = analytical_solution(xyt[1, :], xyt[2, :], xyt[3, :])
+nothing # hide
+#-
 
 begin
     grid_len = 16
