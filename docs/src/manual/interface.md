@@ -73,8 +73,8 @@ wasteful reconstruction of the parameters and states.
 
 ```@example layer_interface
 # This works
-println("Parameter Length: ", LuxCore.parameterlength(l), "; State Length: ",
-    LuxCore.statelength(l))
+println("Parameter Length: ", LuxCore.parameterlength(l),
+    "; State Length: ", LuxCore.statelength(l))
 
 # But still recommended to define these
 LuxCore.parameterlength(l::Linear) = l.out_dims * l.in_dims + l.out_dims
@@ -108,8 +108,8 @@ Random.seed!(rng, 0)
 
 ps, st = LuxCore.setup(rng, l)
 
-println("Parameter Length: ", LuxCore.parameterlength(l), "; State Length: ",
-    LuxCore.statelength(l))
+println("Parameter Length: ", LuxCore.parameterlength(l),
+    "; State Length: ", LuxCore.statelength(l))
 
 x = randn(rng, Float32, 2, 1)
 
