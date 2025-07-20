@@ -98,7 +98,7 @@ function accuracy(model, ps, st, dataloader, data_idx)
     st = Lux.testmode(st)
     for (x, y) in dataloader
         target_class = onecold(cdev(y))
-        predicted_class = onecold(cdev(first(model((data_idx, x), ps, st))))
+        predicted_class = model((data_idx, x), ps, st) |> first |> cdev |> onecold
         total_correct += sum(target_class .== predicted_class)
         total += length(target_class)
     end
@@ -111,10 +111,10 @@ function train()
     dev = reactant_device(; force=true)
 
     model = create_model()
-    dataloaders = dev(load_datasets())
+    dataloaders = load_datasets() |> dev
 
     Random.seed!(1234)
-    ps, st = dev(Lux.setup(Random.default_rng(), model))
+    ps, st = Lux.setup(Random.default_rng(), model) |> dev
 
     train_state = Training.TrainState(model, ps, st, Adam(0.0003f0))
 

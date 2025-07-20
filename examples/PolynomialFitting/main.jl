@@ -115,11 +115,9 @@ forward_pass = Reactant.with_config(;
     @compile Lux.apply(tstate.model, xdev(x), tstate.parameters, Lux.testmode(tstate.states))
 end
 
-y_pred = cdev(
-    first(
-        forward_pass(tstate.model, xdev(x), tstate.parameters, Lux.testmode(tstate.states))
-    ),
-)
+y_pred = forward_pass(
+        tstate.model, xdev(x), tstate.parameters, Lux.testmode(tstate.states)
+    ) |> first |> cdev
 nothing #hide
 
 # Let's plot the results
