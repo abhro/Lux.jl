@@ -242,7 +242,9 @@ println("VJP: ", vjp)
 # we try to find a set of parameters $W$ and $b$, such that $f_{W,b}(x) = Wx + b$, which
 # minimizes the mean squared error:
 
-# $$L(W, b) \longrightarrow \sum_{i = 1}^{k} \frac{1}{2} \| y_i - f_{W,b}(x_i) \|_2^2$$
+# ```math
+# L(W, b) \longrightarrow \sum_{i = 1}^{k} \tfrac{1}{2} \left\| y_i - f_{W,b}(x_i) \right\|_2^2
+# ```
 
 # We can write `f` from scratch, but to demonstrate `Lux`, let us use the `Dense` layer.
 

@@ -178,8 +178,12 @@ nothing # hide
 # `RelativisticOrbitModel` defines system of odes which describes motion of point like
 # particle in Schwarzschild background, uses
 
-# $$u[1] = \chi$$
-# $$u[2] = \phi$$
+# ```math
+# \begin{align*}
+#     u[1] &= \chi \\
+#     u[2] &= \phi
+# \end{align*}
+# ```
 
 # where, $p$, $M$, and $e$ are constants
 
@@ -251,8 +255,12 @@ const nn_model = StatefulLuxLayer{true}(nn, nothing, st)
 # Now we define a system of odes which describes motion of point like particle with
 # Newtonian physics, uses
 #
-# $$u[1] = \chi$$
-# $$u[2] = \phi$$
+# ```math
+# \begin{align*}
+#     u[1] &= \chi \\
+#     u[2] &= \phi
+# \end{align*}
+# ```
 #
 # where, $p$, $M$, and $e$ are constants
 
