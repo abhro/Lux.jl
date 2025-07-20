@@ -47,7 +47,7 @@ begin
         alpha=0.5,
         color=:orange,
         strokecolor=:black,
-        strokewidth=2,
+        strokewidth=1,
         label="Data Points",
     )
 
