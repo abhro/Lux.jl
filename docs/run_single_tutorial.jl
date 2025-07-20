@@ -22,6 +22,7 @@ catch err
         err
     true
 end
+@debug "About to run" name pkg_log_path output_directory path should_run io
 if should_run
     Pkg.instantiate(; io)
     Pkg.precompile(; io)
