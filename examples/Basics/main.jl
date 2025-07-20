@@ -239,7 +239,7 @@ println("VJP: ", vjp)
 
 # Finally, now let us consider a linear regression problem. From a set of data-points
 # $\{ (x_i, y_i), i \in \{ 1, \dots, k \}, x_i \in \mathbb{R}^n, y_i \in \mathbb{R}^m \}$,
-# we try to find a set of parameters $W$ and $b$, s.t. $f_{W,b}(x) = Wx + b$, which
+# we try to find a set of parameters $W$ and $b$, such that $f_{W,b}(x) = Wx + b$, which
 # minimizes the mean squared error:
 
 # $$L(W, b) \longrightarrow \sum_{i = 1}^{k} \frac{1}{2} \| y_i - f_{W,b}(x_i) \|_2^2$$
