@@ -125,7 +125,7 @@ nothing # hide
 
 # ## Defining Accuracy, Loss and Optimiser
 
-# Now let's define the binarycrossentropy loss. Typically it is recommended to use
+# Now let's define the binary cross-entropy loss. Typically it is recommended to use
 # `logitbinarycrossentropy` since it is more numerically stable, but for the sake of
 # simplicity we will use `binarycrossentropy`.
 const lossfn = BinaryCrossEntropyLoss()

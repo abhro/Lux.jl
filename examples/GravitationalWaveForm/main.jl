@@ -176,7 +176,7 @@ nothing # hide
 # ## Simulating the True Model
 
 # `RelativisticOrbitModel` defines system of odes which describes motion of point like
-# particle in schwarzschild background, uses
+# particle in Schwarzschild background, uses
 
 # $$u[1] = \chi$$
 # $$u[2] = \phi$$

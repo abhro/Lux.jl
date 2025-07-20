@@ -120,7 +120,7 @@ W * x
 
 # ## (Im)mutability
 
-# Lux as you might have read is Immutable by convention
+# Lux as you might have read is "Immutable by convention,"
 # which means that the core library is built without any form of mutation and all functions
 # are pure. However, we don't enforce it in any form. We do **strongly recommend** that
 # users extending this framework for their respective applications don't mutate their
@@ -230,7 +230,7 @@ println("JVP: ", jvp)
 
 # ### Vector-Jacobian Product
 
-# Using the same function and inputs, let us compute the VJP.
+# Using the same function and inputs, let us compute the Vector-Jacobian Product (VJP).
 
 vjp = vector_jacobian_product(f, AutoZygote(), x, v)
 println("VJP: ", vjp)
