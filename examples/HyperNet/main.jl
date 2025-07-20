@@ -127,13 +127,13 @@ function train()
         @compile model((data_idx, x), ps, Lux.testmode(st))
     end
 
-    ### Lets train the model
+    ## Let's train the model
     nepochs = 50
     for epoch in 1:nepochs, data_idx in 1:2
         train_dataloader, test_dataloader = dev.(dataloaders[data_idx])
 
-        ### This allows us to trace the data index, else it will be embedded as a constant
-        ### in the IR
+        ## This allows us to trace the data index, else it will be embedded as a constant
+        ## in the IR
         concrete_data_idx = ConcreteRNumber(data_idx)
 
         stime = time()

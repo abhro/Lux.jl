@@ -128,7 +128,7 @@ function create_model(
     Random.seed!(rng, 0)
 
     ps, st = Lux.setup(rng, model)
-    ps = dev((use_named_tuple ? ps : ComponentArray(ps)))
+    ps = dev(use_named_tuple ? ps : ComponentArray(ps))
     st = dev(st)
 
     return model, ps, st
