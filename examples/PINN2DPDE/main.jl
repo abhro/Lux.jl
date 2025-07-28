@@ -23,7 +23,7 @@ using Lux,
 
 const xdev = reactant_device(; force=true)
 const cdev = cpu_device()
-nothing # hide
+nothing #hide
 
 # ## Problem Definition
 
@@ -51,7 +51,7 @@ function PINN(; hidden_dims::Int=32)
         ),
     )
 end
-nothing # hide
+nothing #hide
 
 # ## Define the Loss Functions
 
@@ -77,14 +77,14 @@ end
 function ∂²u_∂y²(model::StatefulLuxLayer, xyt::AbstractArray)
     return Enzyme.gradient(Enzyme.Reverse, sum ∘ ∂u_∂y, Enzyme.Const(model), xyt)[2][2, :]
 end
-nothing # hide
+nothing #hide
 
 # We will use the following loss function
 
 function physics_informed_loss_function(model::StatefulLuxLayer, xyt::AbstractArray)
     return mean(abs2, ∂u_∂t(model, xyt) .- ∂²u_∂x²(model, xyt) .- ∂²u_∂y²(model, xyt))
 end
-nothing # hide
+nothing #hide
 
 # Additionally, we need to compute the loss with respect to the boundary conditions.
 
@@ -102,7 +102,7 @@ function loss_function(model, ps, st, (xyt, target_data, xyt_bc, target_bc))
     loss = physics_loss + data_loss + bc_loss
     return loss, smodel.st, (; physics_loss, data_loss, bc_loss)
 end
-nothing # hide
+nothing #hide
 
 # ## Generate the Data
 
@@ -113,7 +113,7 @@ nothing # hide
 
 analytical_solution(x, y, t) = @. exp(x + y) * cos(x + y + 4t)
 analytical_solution(xyt) = analytical_solution(xyt[1, :], xyt[2, :], xyt[3, :])
-nothing # hide
+nothing #hide
 #-
 
 grid_len = 16

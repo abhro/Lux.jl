@@ -38,7 +38,7 @@ function loadmnist(batchsize, train_split)
         DataLoader(collect.((x_test, y_test)); batchsize, shuffle=false, partial=false),
     )
 end
-nothing # hide
+nothing #hide
 
 # ## Define the Model
 
@@ -120,7 +120,7 @@ function train(model, dev=cpu_device(); rng=Random.default_rng(), kwargs...)
 
     return tr_acc, te_acc
 end
-nothing # hide
+nothing #hide
 
 # ## Finally Training the Model
 

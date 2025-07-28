@@ -30,7 +30,7 @@ using Lux,
 
 const gdev = gpu_device()
 const cdev = cpu_device()
-nothing # hide
+nothing #hide
 
 # ## Generate some training data
 

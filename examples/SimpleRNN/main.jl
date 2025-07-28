@@ -52,7 +52,7 @@ function get_dataloaders(; dataset_size=1000, sequence_length=50)
         DataLoader(collect.((x_val, y_val)); batchsize=128, shuffle=false, partial=false),
     )
 end
-nothing # hide
+nothing #hide
 
 # ## Creating a Classifier
 
@@ -79,7 +79,7 @@ function SpiralClassifier(in_dims, hidden_dims, out_dims)
         LSTMCell(in_dims => hidden_dims), Dense(hidden_dims => out_dims, sigmoid)
     )
 end
-nothing # hide
+nothing #hide
 
 # We can use default Lux blocks -- `Recurrence(LSTMCell(in_dims => hidden_dims)` -- instead
 # of defining the following. But let's still do it for the sake of it.
@@ -126,7 +126,7 @@ function SpiralClassifierCompact(in_dims, hidden_dims, out_dims)
         @return vec(classifier(y))
     end
 end
-nothing # hide
+nothing #hide
 
 # ## Defining Accuracy, Loss and Optimiser
 
@@ -143,7 +143,7 @@ end
 
 matches(y_pred, y_true) = sum((y_pred .> 0.5f0) .== y_true)
 accuracy(y_pred, y_true) = matches(y_pred, y_true) / length(y_pred)
-nothing # hide
+nothing #hide
 
 # ## Training the Model
 
