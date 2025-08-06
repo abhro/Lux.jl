@@ -256,16 +256,16 @@ function main(;
     Random.seed!(rng, seed)
 
     cvae = CVAE(rng; num_latent_dims, image_shape=(image_size..., 1), max_num_filters)
-    ps, st = xdev(Lux.setup(rng, cvae))
+    ps, st = Lux.setup(rng, cvae) |> xdev
 
-    z = xdev(randn(Float32, num_latent_dims, num_samples))
+    z = randn(Float32, num_latent_dims, num_samples) |> xdev
     decode_compiled = Reactant.with_config(;
         dot_general_precision=PrecisionConfig.HIGH,
         convolution_precision=PrecisionConfig.HIGH,
     ) do
         @compile decode(cvae, z, ps, Lux.testmode(st))
     end
-    x = xdev(randn(Float32, image_size..., 1, batchsize))
+    x = randn(Float32, image_size..., 1, batchsize) |> xdev
     cvae_compiled = Reactant.with_config(;
         dot_general_precision=PrecisionConfig.HIGH,
         convolution_precision=PrecisionConfig.HIGH,
@@ -273,7 +273,7 @@ function main(;
         @compile cvae(x, ps, Lux.testmode(st))
     end
 
-    train_dataloader = xdev(loadmnist(batchsize, image_size))
+    train_dataloader = loadmnist(batchsize, image_size) |> xdev
 
     opt = AdamW(; eta=learning_rate, lambda=weight_decay)
 

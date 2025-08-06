@@ -45,7 +45,8 @@ function sinusoidal_embedding(
     lower, upper = log(min_freq), log(max_freq)
     n = embedding_dims ÷ 2
     d = (upper - lower) / (n - 1)
-    freqs = reshape(get_device(x)(exp.(lower:d:upper)), 1, 1, n, 1)
+    dev = get_device(x)
+    freqs = reshape(dev(exp.(lower:d:upper)), 1, 1, n, 1)
     x_ = 2 .* x .* freqs
     return cat(sinpi.(x_), cospi.(x_); dims=Val(3))
 end
@@ -242,7 +243,7 @@ function reverse_diffusion(
         noisy_images = next_noisy_images
 
         # We start t = 1, and gradually decreases to t=0
-        diffusion_times = dev((ones(T, 1, 1, 1, num_images) .- step_size * step))
+        diffusion_times = (ones(T, 1, 1, 1, num_images) .- step_size * step) |> dev
 
         noise_rates, signal_rates = diffusion_schedules(
             diffusion_times, min_signal_rate, max_signal_rate
@@ -302,7 +303,7 @@ end
 function generate(
     model::StatefulLuxLayer, rng, image_size::NTuple{4,Int}, diffusion_steps::Int, dev
 )
-    initial_noise = dev(randn(rng, Float32, image_size...))
+    initial_noise = randn(rng, Float32, image_size...) |> dev
     generated_images = reverse_diffusion(model, initial_noise, diffusion_steps)
     generated_images = denormalize(model, generated_images)
     return clamp01.(generated_images)
@@ -423,24 +424,25 @@ Comonicon.@main function main(;
         min_signal_rate,
         max_signal_rate,
     )
-    ps, st = gdev(Lux.setup(rng, model))
+    ps, st = Lux.setup(rng, model) |> gdev
+
+    cdev = cpu_device()
 
     if inference_mode
         @argcheck saved_model_path !== nothing "`saved_model_path` must be specified for inference"
         @load saved_model_path parameters states
-        parameters = gdev(parameters)
-        states = gdev(states)
+        parameters = parameters |> gdev
+        states = states |> gdev
         model = StatefulLuxLayer(model, parameters, Lux.testmode(states))
 
-        generated_images = cpu_device()(
+        generated_images =
             generate(
                 model,
                 StableRNG(generate_image_seed),
                 (image_size, image_size, 3, generate_n_images),
                 diffusion_steps,
                 gdev,
-            ),
-        )
+            ) |> cdev
 
         path = joinpath(image_dir, "inference")
         @info "Saving generated images to $(path)"
@@ -460,7 +462,7 @@ Comonicon.@main function main(;
 
     @info "Preparing dataset"
     ds = FlowersDataset(x -> preprocess_image(x, image_size), true)
-    data_loader = gdev(DataLoader(ds; batchsize, collate=true, parallel=true))
+    data_loader = DataLoader(ds; batchsize, collate=true, parallel=true) |> gdev
 
     scheduler = CosAnneal(learning_rate_start, learning_rate_end, epochs)
 
@@ -498,15 +500,14 @@ Comonicon.@main function main(;
             model_test = StatefulLuxLayer(
                 tstate.model, tstate.parameters, Lux.testmode(tstate.states)
             )
-            generated_images = cpu_device()(
+            generated_images =
                 generate(
                     model_test,
                     StableRNG(generate_image_seed),
                     (image_size, image_size, 3, generate_n_images),
                     diffusion_steps,
                     gdev,
-                ),
-            )
+                ) |> cdev
 
             path = joinpath(image_dir, "epoch_$(epoch)")
             @info "Saving generated images to $(path)"
@@ -517,8 +518,8 @@ Comonicon.@main function main(;
         if epoch % checkpoint_interval == 0 || epoch == epochs
             path = joinpath(ckpt_dir, "model_$(epoch).jld2")
             @info "Saving checkpoint to $(path)"
-            parameters = cpu_device()(tstate.parameters)
-            states = cpu_device()(tstate.states)
+            parameters = tstate.parameters |> cdev
+            states = tstate.states |> cdev
             @save path parameters states
         end
     end
